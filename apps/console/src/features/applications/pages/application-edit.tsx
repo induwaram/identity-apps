@@ -23,7 +23,8 @@ import {
     AnimatedAvatar,
     AppAvatar,
     LabelWithPopup,
-    PageLayout
+    PageLayout,
+    PrimaryButton
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
@@ -32,7 +33,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -98,6 +99,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
+    
+    //Retreiving the URL for the Asgardeo Login Playground
+    const asgardeoLoginPlaygroundURL = window["AppUtils"].getConfig().extensions.asgardeoLoginPlaygroundURL;
 
     /**
      * Get whether to show the help panel
@@ -391,6 +395,20 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-page-layout` }
             truncateContent={ true }
+            action={
+                application.name === "Asgardeo Playground"
+                    ? (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                window.open(asgardeoLoginPlaygroundURL);
+                            } }
+                            data-testid={ `${ testId }-playground-button` }
+                        >
+                            Try out playground
+                            <Icon name="arrow right"/>
+                        </PrimaryButton>
+                    ):<></>
+            }
         >
             <EditApplication
                 application={ application }
