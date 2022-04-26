@@ -20,6 +20,10 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
+<jsp:scriptlet>
+    <%= htmlWebpackPlugin.options.requestForwardSnippet %>
+</jsp:scriptlet>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,7 +37,7 @@
                 window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"
             }
         </script>
-        <script src="https://unpkg.com/@asgardeo/auth-spa@0.2.19/dist/asgardeo-spa.production.min.js"></script>
+        <script src="https://unpkg.com/@asgardeo/auth-spa@0.3.3/dist/asgardeo-spa.production.min.js"></script>
     </head>
     <body>
         <script>
@@ -45,34 +49,28 @@
                                         ? "<%= htmlWebpackPlugin.options.sessionState %>" 
                                         : null;
 
-            function getApiPath(path) {
-                if(path) {
-                    return serverOrigin + path;
+            if(!authorizationCode) {
+                function getApiPath(path) {
+                    if(path) {
+                        return serverOrigin + path;
+                    }
+
+                    return serverOrigin;
                 }
 
-                return serverOrigin;
-            }
+                var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
-            var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+                var authConfig = {
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
+                    signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                    clientID: "<%= htmlWebpackPlugin.options.clientID %>",
+                    baseUrl: getApiPath(),
+                    responseMode: "form_post",
+                    scope: ["openid SYSTEM"],
+                    storage: "webWorker",
+                    enablePKCE: true
+                }
 
-            var authConfig = {
-                signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/" + "<%= htmlWebpackPlugin.options.basename %>",
-                signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
-                clientID: "<%= htmlWebpackPlugin.options.clientID %>",
-                serverOrigin: getApiPath(),
-                responseMode: "form_post",
-                scope: ["openid SYSTEM"],
-                storage: "webWorker",
-                enablePKCE: true,
-                overrideWellEndpointConfig: true
-            }
-            
-            if(authorizationCode) {
-                sessionStorage.setItem("auth_callback_url_console", userAccessedPath.split(window.origin)[1]);
-                sessionStorage.setItem("userAccessedPath", userAccessedPath.split(window.origin)[1]);
-                window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?code=' + authorizationCode+
-                                '&session_state='+authSessionState;
-            } else {
                 auth.initialize(authConfig);
                 auth.signIn();
             }

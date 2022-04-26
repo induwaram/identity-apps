@@ -622,17 +622,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         switch (value) {
             case ApplicationManagementConstants.IMPLICIT_GRANT:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
-                    "implicit.hint") + " " + "Asgardeo SDKs adhere to security best practices, and do not " +
-                    "implement the implicit grant.";
+                    "implicit.hint", { productName: config.ui.productName });
             case ApplicationManagementConstants.PASSWORD:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
-                    "password.hint") + " " + "Asgardeo SDKs adhere to security best practices, and do not " +
-                    "implement the password grant.";
+                    "password.hint", { productName: config.ui.productName });
             case ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT:
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
                         "client_credential.hint");
             case ApplicationManagementConstants.REFRESH_TOKEN_GRANT:
-                return "Refresh token grant type should only be selected along with the Code grant type.";
+                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.validation." + 
+                    "refreshToken");
             default:
                 return null;
         }
@@ -984,6 +983,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
 
+        // Add `scope validators` only if `scope validators` are visible
+        if (applicationConfig.inboundOIDCForm.showScopeValidators) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                scopeValidators: values.get("scopeValidator")
+            };
+        }
+
         // If the app is newly created do not add `clientId` & `clientSecret`.
         if (!initialValues?.clientId || !initialValues?.clientSecret) {
             return inboundConfigFormValues;
@@ -1306,6 +1313,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     customLabel={ callbackURLsErrorLabel }
                                     productName={ config.ui.productName }
                                     isCustom={ CustomApplicationTemplate?.id === template?.id }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -1359,6 +1381,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     showPredictions={ false }
                                     customLabel={ allowedOriginsErrorLabel }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
                                 />
                                 <Hint>
                                     The HTTP origins that host your web application. You can define multiple web
@@ -1851,6 +1888,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         } }
                         showPredictions={ false }
                         skipInternalValidation={ true }
+                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                            + "positive.header") }
+                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                            + "negative.header") }
+                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                            + "positive.content", { productName: config.ui.productName }) }
+                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                            + "negative.content", { productName: config.ui.productName }) }
+                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                            + "withLabel.positive.detailedContent.0") }
+                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                            + "withLabel.negative.detailedContent.0") }
+                        insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                        showLessContent={ t("common:showLess") }
+                        showMoreContent={ t("common:showMore") }
                     />
                 </Grid.Column>
             </Grid.Row>

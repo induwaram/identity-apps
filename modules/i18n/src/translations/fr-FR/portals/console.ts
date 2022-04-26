@@ -1040,7 +1040,8 @@ export const console: ConsoleNS = {
                                                         placeholder: "Sélectionner une étape"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Utiliser l'identifiant du sujet de",
+                                                        label: "Choisissez l'identifiant de l'utilisateur à partir " +
+                                                            "de cette étape",
                                                         placeholder: "Sélectionner une étape"
                                                     }
                                                 }
@@ -1492,24 +1493,27 @@ export const console: ConsoleNS = {
                                     },
                                     implicit: {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
-                                            "n'est pas recommandée.",
+                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " + 
+                                            "pratiques desécurité et ne pas mettre en œuvre l'octroi implicite",
                                         label: "{{grantType}} (non recommandé)"
                                     },
                                     password: {
                                         hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
-                                            "publiques n'est pas recommandée.",
+                                            "publiques n'est pas recommandée. {{productName}} respectez les " + 
+                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " + 
+                                            "de mot de passe",
                                         label: "{{grantType}} (non recommandé)"
                                     }
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
                                     "de jetons.",
                                 label: "Types de subvention autorisés",
-                                validations: {
-                                    empty: "Sélectionnez au moins un type de subvention"
-                                },
-                                vvalidation: {
+                                validation: {
                                     refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
                                     "avec les types d'octroi qui fournissent un jeton d'actualisation."
+                                },
+                                validations: {
+                                    empty: "Sélectionnez au moins un type de subvention"
                                 }
                             },
                             public: {
@@ -2879,8 +2883,8 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            subtitle: "Configurez un nouveau fournisseur d'identité pour vous connecter avec des " +
-                                "protocoles d'authentification standard.",
+                            subtitle: "Configurez un fournisseur d'identité pour se connecter avec des " +
+                            "protocoles d'authentification standard.",
                             title: "Fournisseurs d'identité basés sur des normes"
                         },
                         validation: {
@@ -3819,6 +3823,22 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "Par exemple, nom, description, etc."
+                            },
+                            filterCondition: {
+                                placeholder: "Par exemple, commence par etc."
+                            },
+                            filterValue: {
+                                placeholder: "Saisir une valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Chercher par nom d'secret"
+                },
                 alerts: {
                     createdSecret: {
                         description: "Le secret a été créé avec succès.",
@@ -5371,7 +5391,8 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Dernière modification",
-                        name: "Nom"
+                        name: "Nom",
+                        source: "Magasin d'utilisateurs"
                     },
                     storeOptions: "Sélectionner un annuaire"
                 },

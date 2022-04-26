@@ -1031,7 +1031,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "පියවර තෝරන්න"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "සිට විෂය හඳුනාගැනුම භාවිතා කරන්න",
+                                                        label: "මෙම පියවරෙන් පරිශීලක හැඳුනුම්කාරකය තෝරන්න",
                                                         placeholder: "පියවර තෝරන්න"
                                                     }
                                                 }
@@ -1463,11 +1463,15 @@ export const console: ConsoleNS = {
                                         label: "(openid විෂය පථයට අවසර නැත)"
                                     },
                                     implicit: {
-                                        hint: "පොදු අයදුම්පත් සමඟ ව්‍යංග ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි.",
+                                        hint: "පොදු අයදුම්පත් සමඟ ව්‍යංග ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි. " +
+                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, ව්‍යංග ප්‍රදානය " + 
+                                            "ක්‍රියාත්මක නොකරන්න.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     },
                                     password: {
-                                        hint: "පොදු යෙදුම් සමඟ මුරපද ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි.",
+                                        hint: "පොදු යෙදුම් සමඟ මුරපද ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි. " +
+                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, මුරපද ප්‍රදානය " + 
+                                            "ක්‍රියාත්මක නොකරන්න.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     }
                                 },
@@ -2803,8 +2807,7 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ සම්බන්ධ වීම සඳහා නව අනන්‍යතා සැපයුම්කරුවෙකු " +
-                                "වින්‍යාස කරන්න.",
+                            subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ සම්බන්ධ වීමට IDP වින්‍යාස කරන්න.",
                             title: "සම්මත පදනම් කරගත් හැඳුනුම්පත් සපයන්නන්"
                         },
                         validation: {
@@ -3718,6 +3721,22 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "උදා. නම, විස්තරය ආදිය."
+                            },
+                            filterCondition: {
+                                placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
+                            },
+                            filterValue: {
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "රහස් නාමයෙන් සොයන්න"
+                },
                 alerts: {
                     createdSecret: {
                         description: "නිර්මාණය සාර්ථකයි.",
@@ -5249,7 +5268,8 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         lastModified: "අවසන් වරට වෙනස් කරන ලදි",
-                        name: "නම"
+                        name: "නම",
+                        source: "පරිශීලක ගබඩාව"
                     },
                     storeOptions: "පරිශීලක වෙළඳසැල තෝරන්න"
                 },

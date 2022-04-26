@@ -1024,7 +1024,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Pick subject identifier from this step",
+                                                        label: "Pick user identifier from this step",
                                                         placeholder: "Select step"
                                                     }
                                                 }
@@ -1460,11 +1460,15 @@ export const console: ConsoleNS = {
                                         label: "(openid scope not allowed)"
                                     },
                                     implicit: {
-                                        hint: "Using the implicit grant with public applications is not recommended.",
+                                        hint: "Using the implicit grant with public applications is not recommended. " +
+                                            "{{productName}} adhere to security best practices, " + 
+                                            "and do not implement the implicit grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
                                     password: {
-                                        hint: "Using the password grant with public applications is not recommended.",
+                                        hint: "Using the password grant with public applications is not recommended. " +
+                                            "{{productName}} adhere to security best practices, " + 
+                                            "and do not implement the password grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },
@@ -4006,8 +4010,7 @@ export const console: ConsoleNS = {
                 templates: {
                     enterprise: {
                         addWizard: {
-                            subtitle: "Configure a new Identity Provider to connect with standard authentication " +
-                                "protocols.",
+                            subtitle: "Configure an IDP to connect with standard authentication protocols.",
                             title: "Standard based Identity Providers"
                         },
                         saml: {
@@ -5095,6 +5098,22 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name, Description etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by secret name"
+                },
                 alerts: {
                     createdSecret: {
                         description: "Successfully created the secret.",
@@ -6648,7 +6667,8 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Modified Time",
-                        name: "Group"
+                        name: "Group",
+                        source: "User Store"
                     },
                     storeOptions: "Select User Store"
                 },

@@ -20,6 +20,7 @@ import { RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/m
 import { Forms } from "@wso2is/forms";
 import {
     Button,
+    ContentLoader,
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
@@ -95,6 +96,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
 
+    const [ isSelectedUsersLoading, setIsSelectedUsersLoading ] = useState<boolean>(true);
+
     const initialRenderTempUsers = useRef(true);
 
     useEffect(() => {
@@ -168,6 +171,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         setTempUserList(selectedUserList);
                     }
                 }
+
+                setIsSelectedUsersLoading(false);
 
                 if (initialValues && initialValues instanceof Array) {
                     const selectedUserList: UserBasicInterface[] = [];
@@ -391,6 +396,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             usersList?.map((user, index)=> {
@@ -422,6 +429,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             tempUserList?.map((user, index)=> {
@@ -546,32 +555,36 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         </Grid.Row>
                                     </EmphasizedSegment>
                                 ) : (
-                                    <EmphasizedSegment>
-                                        <EmptyPlaceholder
-                                            title={ t("console:manage.features.roles.edit.users.list." +
-                                                "emptyPlaceholder.title") }
-                                            subtitle={ [
-                                                t("console:manage.features.roles.edit.users.list." +
-                                                    "emptyPlaceholder.subtitles", { type: "role" })
-                                            ] }
-                                            action={
-                                                !isReadOnly && (
-                                                    <PrimaryButton
-                                                        data-testid={ `${ testId }-users-list-empty-assign-users-
-                                                        button` }
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                        icon="plus"
-                                                    >
-                                                        { t("console:manage.features.roles.edit.users.list." +
-                                                            "emptyPlaceholder.action") }
-                                                    </PrimaryButton>
-                                                )
-                                            }
-                                            image={ getEmptyPlaceholderIllustrations().emptyList }
-                                            imageSize="tiny"
-                                        />
-                                    </EmphasizedSegment>
-                                )
+                                    !isSelectedUsersLoading
+                                        ? (
+                                            <EmphasizedSegment>
+                                                <EmptyPlaceholder
+                                                    title={ t("console:manage.features.roles.edit.users.list." +
+                                                        "emptyPlaceholder.title") }
+                                                    subtitle={ [
+                                                        t("console:manage.features.roles.edit.users.list." +
+                                                            "emptyPlaceholder.subtitles", { type: "role" })
+                                                    ] }
+                                                    action={
+                                                        !isReadOnly && (
+                                                            <PrimaryButton
+                                                                data-testid={ `${ testId }-users-list-empty-assign-
+                                                                users-button` }
+                                                                onClick={ handleOpenAddNewGroupModal }
+                                                                icon="plus"
+                                                            >
+                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                    "emptyPlaceholder.action") }
+                                                            </PrimaryButton>
+                                                        )
+                                                    }
+                                                    image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                    imageSize="tiny"
+                                                />
+                                            </EmphasizedSegment>
+                                        )
+                                        : <ContentLoader className="p-3" active />
+                                    )
                             }
                         </Grid.Column>
                     </Grid.Row>
@@ -609,6 +622,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                            + "emptyPlaceholders.default") }
                                     >
                                         {
                                             usersList?.map((user, index)=> {
@@ -641,6 +656,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                            + "emptyPlaceholders.default") }
                                     >
                                         {
                                             tempUserList?.map((user, index)=> {
