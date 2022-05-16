@@ -45,11 +45,11 @@ import { deleteApplication } from "../api";
     content: string;
    }
    
-   /**
-    * Danger Zone component
-    *
-    * @return {JSX.Element}
-    */
+/**
+ * Danger Zone component
+ *
+ * @return {JSX.Element}
+ */
 export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = (
     props: DangerZonePropsInterface
 ): ReactElement => {
@@ -207,4 +207,3 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
         </>
     );
 };
- 
