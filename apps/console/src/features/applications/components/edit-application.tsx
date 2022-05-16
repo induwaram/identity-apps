@@ -147,7 +147,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
-    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
@@ -312,7 +312,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
         setSAMLConfigsLoading(true);
 
-
         ApplicationManagementUtils.getSAMLApplicationMeta()
             .finally(() => {
                 setSAMLConfigsLoading(false);
@@ -384,7 +383,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         setShowClientSecretHashDisclaimerModal(true);
     }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
-
+    
     /**
      * Handles the defaultActiveIndex change.
      */
@@ -531,11 +530,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
-
+                    setIsInboundProtocolConfigRequestLoading(false);
                     setIsApplicationUpdated(true);
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
-                    setIsInboundProtocolConfigRequestLoading(false);
                     getConfiguredInboundProtocolsList(selectedProtocolList);
                     getConfiguredInboundProtocolConfigs(protocolConfigs);
                 });
@@ -733,10 +731,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             panes.push(...tabPaneExtensions);
         }
 
-        if (featureConfig) {
+        if (featureConfig) {            
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
-
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.GENERAL)) {
                     panes.push({
@@ -745,14 +742,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                 <Menu.Item data-tourid="general">
                                     { t("console:develop.features.applications.edit.sections.general.tabName") }
                                 </Menu.Item>,
-                        render: () => applicationConfig.editApplication.
-                            getOveriddenTab(
-                                inboundProtocolConfig?.oidc?.clientId, 
-                                ApplicationTabTypes.GENERAL,
-                                GeneralApplicationSettingsTabPane(),
-                                application.name,
-                                application.id
-                            ) 
+                        render: () => 
+                            applicationConfig.editApplication.
+                                getOveriddenTab(
+                                    inboundProtocolConfig?.oidc?.clientId, 
+                                    ApplicationTabTypes.GENERAL,
+                                    GeneralApplicationSettingsTabPane(),
+                                    application.name,
+                                    application.id
+                                ) 
                     });
                 }
             }
@@ -778,7 +776,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         <Menu.Item data-tourid="attributes">
                             { t("console:develop.features.applications.edit.sections.attributes.tabName") }
                         </Menu.Item>,
-                     render: AttributeSettingTabPane
+                     render:() => 
+                         applicationConfig.editApplication.
+                             getOveriddenTab(
+                                 inboundProtocolConfig?.oidc?.clientId, 
+                                 ApplicationTabTypes.USER_ATTRIBUTES,
+                                 AttributeSettingTabPane(),
+                                 application.name,
+                                 application.id
+                             ) 
                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
@@ -795,7 +801,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      render: SignOnMethodsTabPane
                  });
             }
-
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
@@ -998,7 +1003,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     return (
-        application && !isInboundProtocolsRequestLoading
+        application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS

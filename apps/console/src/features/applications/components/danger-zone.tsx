@@ -39,9 +39,13 @@ import { deleteApplication } from "../api";
      * Name of the application.
      */
     name: string;
+    /**
+     * Customized content.
+     */
+    content: string;
    }
    
-/**
+   /**
     * Danger Zone component
     *
     * @return {JSX.Element}
@@ -53,6 +57,7 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
         featureConfig,
         appId,
         name,
+        content,
         [ "data-componentid" ]: testId
     } = props;
     
@@ -65,7 +70,6 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
-
 
     /**
      * Deletes an application.
@@ -147,8 +151,10 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                                     t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
                                 }
                                 subheader={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                    !content ?
+                                        t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
                                         ".subheader")
+                                        : content
                                 }
                                 onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
                                 data-testid={ `${ testId }-danger-zone` }
@@ -194,12 +200,11 @@ export const DangerZoneComponent: FunctionComponent<DangerZonePropsInterface> = 
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
-                >
+                >   
                     { t("console:develop.features.applications.confirmations.deleteApplication.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
-       
     );
 };
  
